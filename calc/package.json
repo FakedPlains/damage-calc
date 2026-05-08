@@ -1,11 +1,13 @@
 {
-  "name": "@smogon/calc",
+  "name": "@fakedplains/smogon-calc",
   "version": "0.11.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "unpkg": "dist/production.min.js",
-  "description": "Pokémon battle calculator",
-  "repository": "github:smogon/damage-calc",
+  "description": "Pokémon battle calculator (Champions fork)",
+  "repository": "github:FakedPlains/damage-calc",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "contributors": [
     "Austin Couturier <austincouturier@icloud.com>"
   ],
@@ -29,8 +31,7 @@
     "lint": "eslint --cache src --ext ts",
     "fix": "eslint --fix src --ext ts",
     "compile": "tsc -p .",
-    "bundle": "node bundle",
-    "build": "npm run compile && npm run bundle",
+    "build": "npm run compile",
     "test": "jest",
     "coverage": "jest --coverage",
     "prepare": "npm run build",
