@@ -56,17 +56,17 @@ describe('calc', () => {
       });
     });
 
-    inGens([0, 9], ({gen, calculate, Pokemon, Move}) => {
+    inGens([0, [9, 9]], ({gen, calculate, Pokemon, Move}) => {
       test(`Last Respects uses fainted allies for base power (gen ${gen})`, () => {
-        const gengar = Pokemon('Gengar', {level: 50});
-        const mew = Pokemon('Mew', {level: 50});
-        const normal = calculate(gengar, mew, Move('Last Respects'));
+        const attacker = Pokemon(gen === 0 ? 'Meganium-Mega' : 'Gengar', {level: 50});
+        const defender = Pokemon(gen === 0 ? 'Tyranitar' : 'Mew', {level: 50});
+        const normal = calculate(attacker, defender, Move('Last Respects'));
 
-        gengar.alliesFainted = 3;
-        const boosted = calculate(gengar, mew, Move('Last Respects'));
+        attacker.alliesFainted = 3;
+        const boosted = calculate(attacker, defender, Move('Last Respects'));
 
-        gengar.alliesFainted = 10;
-        const capped = calculate(gengar, mew, Move('Last Respects'));
+        attacker.alliesFainted = 10;
+        const capped = calculate(attacker, defender, Move('Last Respects'));
 
         expect(boosted.range()[0]).toBeGreaterThan(normal.range()[0]);
         expect(boosted.desc()).toContain('Last Respects (200 BP)');
