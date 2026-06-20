@@ -8930,8 +8930,31 @@ const SS_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
 
 const SS: {[name: string]: SpeciesData} = extend(true, {}, SM, SS_PATCH);
 
-delete SS['Pikachu-Starter'];
 delete SS['Eevee-Starter'];
+removeAttr(SS, 'Eevee', 'otherFormes');
+delete SS['Pikachu-Starter'];
+const TOTEM_SIZED = [
+  'Araquanid-Totem',
+  'Gumshoos-Totem',
+  'Kommo-o-Totem',
+  'Lurantis-Totem',
+  'Marowak-Alola-Totem',
+  'Mimikyu-Busted-Totem',
+  'Mimikyu-Totem',
+  'Raticate-Alola-Totem',
+  'Ribombee-Totem',
+  'Salazzle-Totem',
+  'Togedemaru-Totem',
+  'Vikavolt-Totem',
+];
+for (const species of TOTEM_SIZED) {
+  const base = SS[SS[species].baseSpecies!];
+  // @ts-expect-error readonly
+  base.otherFormes = [...new Set(base.otherFormes)].filter(f => !f.endsWith('-Totem'));
+  // @ts-expect-error readonly
+  if (!base.otherFormes.length) delete base.otherFormes;
+  delete SS[species];
+}
 
 const PLA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   Arcanine: {otherFormes: ['Arcanine-Hisui']},
@@ -9729,6 +9752,12 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     nfe: true,
     abilities: {0: 'Swarm'},
   },
+  Obliteryx: {
+    types: ['Dark', 'Flying'],
+    bs: {hp: 102, at: 128, df: 126, sa: 45, sd: 90, sp: 64},
+    weightkg: 62,
+    abilities: {0: 'Opportunist'},
+  },
   Ogerpon: {
     types: ['Grass'],
     bs: {hp: 80, at: 120, df: 84, sa: 60, sd: 96, sp: 110},
@@ -10396,7 +10425,7 @@ const ZA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     types: ['Poison', 'Dragon'],
     bs: {hp: 65, at: 85, df: 105, sa: 132, sd: 163, sp: 44},
     weightkg: 100.3,
-    abilities: {0: 'Poison Point'},
+    abilities: {0: 'Regenerator'},
     baseSpecies: 'Dragalge',
   },
   'Dragonite-Mega': {
@@ -10417,7 +10446,7 @@ const ZA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     types: ['Electric'],
     bs: {hp: 85, at: 145, df: 80, sa: 135, sd: 90, sp: 80},
     weightkg: 180.0,
-    abilities: {0: 'Levitate'},
+    abilities: {0: 'Eelevate'},
     baseSpecies: 'Eelektross',
   },
   'Emboar-Mega': {
@@ -10439,7 +10468,7 @@ const ZA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     bs: {hp: 65, at: 135, df: 135, sa: 70, sd: 65, sp: 100},
     weightkg: 99.0,
     gender: 'N',
-    abilities: {0: 'Battle Armor'},
+    abilities: {0: 'Defiant'},
     baseSpecies: 'Falinks',
   },
   'Feraligatr-Mega': {
@@ -10572,28 +10601,28 @@ const ZA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     types: ['Fire', 'Normal'],
     bs: {hp: 86, at: 88, df: 92, sa: 129, sd: 86, sp: 126},
     weightkg: 93.3,
-    abilities: {0: 'Rivalry'},
+    abilities: {0: 'Fire Mane'},
     baseSpecies: 'Pyroar',
   },
   'Raichu-Mega-X': {
     types: ['Electric'],
     bs: {hp: 60, at: 135, df: 95, sa: 90, sd: 95, sp: 110},
     weightkg: 38.0,
-    abilities: {0: 'Surge Surfer'},
+    abilities: {0: 'Electric Surge'},
     baseSpecies: 'Raichu',
   },
   'Raichu-Mega-Y': {
     types: ['Electric'],
     bs: {hp: 60, at: 100, df: 55, sa: 160, sd: 80, sp: 130},
     weightkg: 26.0,
-    abilities: {0: 'Surge Surfer'},
+    abilities: {0: 'No Guard'},
     baseSpecies: 'Raichu',
   },
   'Scolipede-Mega': {
     types: ['Bug', 'Poison'],
     bs: {hp: 60, at: 140, df: 149, sa: 75, sd: 99, sp: 62},
     weightkg: 230.5,
-    abilities: {0: 'Poison Point'},
+    abilities: {0: 'Shell Armor'},
     baseSpecies: 'Scolipede',
   },
   'Scovillain-Mega': {
@@ -10607,7 +10636,7 @@ const ZA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     types: ['Dark', 'Fighting'],
     bs: {hp: 65, at: 130, df: 135, sa: 55, sd: 135, sp: 68},
     weightkg: 31.0,
-    abilities: {0: 'Shed Skin'},
+    abilities: {0: 'Intimidate'},
     baseSpecies: 'Scrafty',
   },
   'Skarmory-Mega': {
@@ -10621,7 +10650,7 @@ const ZA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     types: ['Fighting', 'Flying'],
     bs: {hp: 85, at: 140, df: 100, sa: 60, sd: 90, sp: 110},
     weightkg: 50.0,
-    abilities: {0: 'Intimidate'},
+    abilities: {0: 'Contrary'},
     baseSpecies: 'Staraptor',
   },
   'Starmie-Mega': {
@@ -10712,6 +10741,7 @@ const CHAMPIONS_LIST = [
   'Altaria-Mega',
   'Ampharos',
   'Ampharos-Mega',
+  'Annihilape',
   'Appletun',
   'Araquanid',
   'Arbok',
@@ -10729,6 +10759,8 @@ const CHAMPIONS_LIST = [
   'Azumarill',
   'Banette',
   'Banette-Mega',
+  'Barbaracle',
+  'Barbaracle-Mega',
   'Basculegion',
   'Basculegion-F',
   'Bastiodon',
@@ -10738,6 +10770,8 @@ const CHAMPIONS_LIST = [
   'Bellibolt',
   'Blastoise',
   'Blastoise-Mega',
+  'Blaziken',
+  'Blaziken-Mega',
   'Camerupt',
   'Camerupt-Mega',
   'Castform',
@@ -10769,11 +10803,15 @@ const CHAMPIONS_LIST = [
   'Delphox-Mega',
   'Diggersby',
   'Ditto',
+  'Dragalge',
+  'Dragalge-Mega',
   'Dragapult',
   'Dragonite',
   'Dragonite-Mega',
   'Drampa',
   'Drampa-Mega',
+  'Eelektross',
+  'Eelektross-Mega',
   'Emboar',
   'Emboar-Mega',
   'Emolga',
@@ -10782,6 +10820,8 @@ const CHAMPIONS_LIST = [
   'Espeon',
   'Excadrill',
   'Excadrill-Mega',
+  'Falinks',
+  'Falinks-Mega',
   'Farigiraf',
   'Feraligatr',
   'Feraligatr-Mega',
@@ -10804,6 +10844,7 @@ const CHAMPIONS_LIST = [
   'Garganacl',
   'Gengar',
   'Gengar-Mega',
+  'Gholdengo',
   'Glaceon',
   'Glalie',
   'Glalie-Mega',
@@ -10820,6 +10861,7 @@ const CHAMPIONS_LIST = [
   'Gourgeist-Super',
   'Greninja',
   'Greninja-Mega',
+  'Grimmsnarl',
   'Gyarados',
   'Gyarados-Mega',
   'Hatterene',
@@ -10831,6 +10873,7 @@ const CHAMPIONS_LIST = [
   'Hippowdon',
   'Houndoom',
   'Houndoom-Mega',
+  'Houndstone',
   'Hydrapple',
   'Hydreigon',
   'Incineroar',
@@ -10854,11 +10897,15 @@ const CHAMPIONS_LIST = [
   'Lycanroc-Dusk',
   'Lycanroc-Midnight',
   'Machamp',
+  'Malamar',
+  'Malamar-Mega',
   'Mamoswine',
   'Manectric',
   'Manectric-Mega',
   'Maushold',
   'Maushold-Four',
+  'Mawile',
+  'Mawile-Mega',
   'Medicham',
   'Medicham-Mega',
   'Meganium',
@@ -10868,6 +10915,8 @@ const CHAMPIONS_LIST = [
   'Meowstic-F',
   'Meowstic-F-Mega',
   'Meowstic-M-Mega',
+  'Metagross',
+  'Metagross-Mega',
   'Milotic',
   'Mimikyu',
   'Mimikyu-Busted',
@@ -10875,11 +10924,13 @@ const CHAMPIONS_LIST = [
   'Morpeko-Hangry',
   'Mr. Rime',
   'Mudsdale',
+  'Musharna',
   'Ninetales',
   'Ninetales-Alola',
   'Noivern',
   'Oranguru',
   'Orthworm',
+  'Overqwil',
   'Palafin',
   'Palafin-Hero',
   'Pangoro',
@@ -10894,9 +10945,14 @@ const CHAMPIONS_LIST = [
   'Polteageist',
   'Polteageist-Antique',
   'Primarina',
+  'Pyroar',
+  'Pyroar-Mega',
   'Quaquaval',
+  'Qwilfish',
   'Raichu',
   'Raichu-Alola',
+  'Raichu-Mega-X',
+  'Raichu-Mega-Y',
   'Rampardos',
   'Reuniclus',
   'Rhyperior',
@@ -10914,10 +10970,16 @@ const CHAMPIONS_LIST = [
   'Samurott',
   'Samurott-Hisui',
   'Sandaconda',
+  'Sceptile',
+  'Sceptile-Mega',
   'Scizor',
   'Scizor-Mega',
+  'Scolipede',
+  'Scolipede-Mega',
   'Scovillain',
   'Scovillain-Mega',
+  'Scrafty',
+  'Scrafty-Mega',
   'Serperior',
   'Sharpedo',
   'Sharpedo-Mega',
@@ -10938,12 +11000,16 @@ const CHAMPIONS_LIST = [
   'Sneasler',
   'Snorlax',
   'Spiritomb',
+  'Staraptor',
+  'Staraptor-Mega',
   'Starmie',
   'Starmie-Mega',
   'Steelix',
   'Steelix-Mega',
   'Stunfisk',
   'Stunfisk-Galar',
+  'Swampert',
+  'Swampert-Mega',
   'Sylveon',
   'Talonflame',
   'Tauros',
@@ -10970,6 +11036,7 @@ const CHAMPIONS_LIST = [
   'Venusaur-Mega',
   'Victreebel',
   'Victreebel-Mega',
+  'Vileplume',
   'Vivillon',
   'Vivillon-Fancy',
   'Vivillon-Pokeball',
@@ -10992,19 +11059,15 @@ const CHAMPIONS: {[name: string]: SpeciesData} = extend(
   Object.fromEntries(CHAMPIONS_LIST.map(s => [s, SV[s]])), CHAMPIONS_PATCH
 );
 
-removeAttr(CHAMPIONS, 'Alcremie', 'otherFormes');
-removeAttr(CHAMPIONS, 'Appletun', 'otherFormes');
-removeAttr(CHAMPIONS, 'Araquanid', 'otherFormes');
-removeAttr(CHAMPIONS, 'Corviknight', 'otherFormes');
-removeAttr(CHAMPIONS, 'Flapple', 'otherFormes');
 removeAttr(CHAMPIONS, 'Floette-Eternal', 'baseSpecies');
-removeAttr(CHAMPIONS, 'Garbodor', 'otherFormes');
-removeAttr(CHAMPIONS, 'Hatterene', 'otherFormes');
-removeAttr(CHAMPIONS, 'Machamp', 'otherFormes');
-removeAttr(CHAMPIONS, 'Pikachu', 'otherFormes');
-removeAttr(CHAMPIONS, 'Salazzle', 'otherFormes');
-removeAttr(CHAMPIONS, 'Sandaconda', 'otherFormes');
-removeAttr(CHAMPIONS, 'Snorlax', 'otherFormes');
+for (const species of Object.values(CHAMPIONS)) {
+  if (species.otherFormes) {
+    // @ts-expect-error readonly
+    species.otherFormes = [...new Set(species.otherFormes)].filter(f => CHAMPIONS_LIST.includes(f));
+    // @ts-expect-error readonly
+    if (!species.otherFormes.length) delete species.otherFormes;
+  }
+}
 
 export const SPECIES = [CHAMPIONS, RBY, GSC, ADV, DPP, BW, XY, SM, SS, SV];
 
